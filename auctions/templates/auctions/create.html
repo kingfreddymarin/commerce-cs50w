@@ -4,6 +4,30 @@
 <h2>Create new Listing</h2>
 
 <form action="{%url 'create'%}" method="POST">
-    <input type="text">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="Title">
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description" placeholder="Description">
+    </div>
+    <div class="form-group">
+        <label for="image">Image URL</label>
+        <input type="text" class="form-control" id="image" placeholder="Image">
+    </div>
+    <div class="form-group">
+        <label for="price">Price $</label>
+        <input type="number" class="form-control" id="price" placeholder="$9.99">
+    </div>
+    <div class="form-group">
+        <label for="category">Category</label>
+        <select class="form-control" id="category">
+            {%for category in categorys%}
+            <option>{{category.categoryName}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-dark">Create Listing</button>
 </form>
 {% endblock %}
