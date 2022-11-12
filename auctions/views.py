@@ -7,13 +7,37 @@ from django.urls import reverse
 from .models import User, Category, Listing
 
 
+def listing(request, id):
+    return render(request, "auctions/listing.html")
+
+
 def index(request):
-    return render(request, "auctions/index.html")
+    listings = Listing.objects.filter(activeListing=True)
+    return render(request, "auctions/index.html", {
+        "listings": listings,
+        "categorys": Category.objects.all()
+    })
+
+
+def categoryFilter(request):
+    if request.method == "POST":
+        if request.POST["category"] == "fb":
+            return HttpResponseRedirect(reverse(index))
+        else:
+            catFilter = request.POST["category"]
+            category = Category.objects.get(categoryName=catFilter)
+            listings = Listing.objects.filter(
+                activeListing=True, category=category)
+            return render(request, "auctions/index.html", {
+                "listings": listings,
+                "categorys": Category.objects.all()
+            })
 
 
 def createListing(request):
     if request.method == "GET":
         return render(request, "auctions/create.html", {
+            # Sending the categories to the view
             "categorys": Category.objects.all()
         })
     else:
@@ -22,20 +46,23 @@ def createListing(request):
         description = request.POST["description"]
         image = request.POST["image"]
         price = request.POST["price"]
+
+        # As category is an object, we need to get all it's values from the category input
         category = request.POST["category"]
-        categoryData = Category.objects(categoryName=category)
-        # current user
+        categoryData = Category.objects.get(categoryName=category)
+
+        # Getting the current user
         user = request.user
 
+        # Adding to db
         newListing = Listing(
             title=title,
             description=description,
             image=image,
             price=float(price),
             category=categoryData,
-            user=user
+            owner=user
         )
-        # insert the object to the ddatabase
         newListing.save()
         # redirect to index
         return HttpResponseRedirect(reverse(index))

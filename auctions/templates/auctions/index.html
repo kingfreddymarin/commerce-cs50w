@@ -1,7 +1,31 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+<h2>Active Listings</h2>
+<form action="{% url 'categoryFilter'%}" method="post" class="d-flex justify-content-start align-items-center">
+    {% csrf_token %}
+    <select class="form-control mr-3" name="category" id="category">
+        <option value="fb">Filter by...</option>
+        {%for category in categorys%}
+        <option value='{{category}}'>{{category}}</option>
+        {%endfor%}
+    </select>
+    <input type="submit" class="btn btn-dark">
+</form>
 
-    TODO
+<section class="w-80 p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-start">
+    {%for listing in listings%}
+    <a href="#">
+        <div class="p-2 bd-highlight card col-sm" style="width: 18rem;">
+            <img class="card-img-top" src="{{listing.image}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{listing.title}}</h5>
+                <p class="card-text">{{listing.description}}</p>
+                <h6>${{listing.price}}</h6>
+            </div>
+        </div>
+    </a>
+    {%endfor%}
+</section>
+
 {% endblock %}

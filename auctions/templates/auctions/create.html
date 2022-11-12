@@ -3,7 +3,7 @@
 {% block body %}
 <h2>Create new Listing</h2>
 
-<form action="{%url 'create'%}" method="POST">
+<form action="{%url 'create'%}" method="post">
     {% csrf_token %}
     <div class="form-group">
         <label for="title">Title</label>
@@ -23,12 +23,12 @@
     </div>
     <div class="form-group">
         <label for="category">Category</label>
-        <select class="form-control" id="category">
+        <select class="form-control" name="category" id="category">
             {%for category in categorys%}
-            <option name="category" id="category" value = '{{category.categoryName}}'>{{category.categoryName}}</option>
+            <option value = '{{category}}'>{{category}}</option>
             {%endfor%}
         </select>
     </div>
-    <button type="submit" class="btn btn-dark">Create Listing</button>
+    <input type="submit" class="btn btn-dark">
 </form>
 {% endblock %}
