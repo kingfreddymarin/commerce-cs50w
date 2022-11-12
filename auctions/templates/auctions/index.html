@@ -13,9 +13,9 @@
     <input type="submit" class="btn btn-dark">
 </form>
 
-<section class="w-80 p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-start">
+<section class="w-100 p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-center">
     {%for listing in listings%}
-    <a href="#">
+    <a href="{%url "listing" id=listing.id%}">
         <div class="p-2 bd-highlight card col-sm" style="width: 18rem;">
             <img class="card-img-top" src="{{listing.image}}" alt="Card image cap">
             <div class="card-body">

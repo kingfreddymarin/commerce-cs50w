@@ -8,7 +8,10 @@ from .models import User, Category, Listing
 
 
 def listing(request, id):
-    return render(request, "auctions/listing.html")
+    listingData = Listing.objects.get(pk=id)
+    return render(request, "auctions/listing.html", {
+        "listing": listingData
+    })
 
 
 def index(request):
