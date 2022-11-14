@@ -1,18 +1,37 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/layout.html" %} {% block body %}
 
-{% block body %}
+<section
+  style="width: 100%"
+  class="p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-start"
+>
+  <div class="jumbotron">
+    <h1 class="display-4">{{listing.title}}</h1>
+    <img class="img" src="{{listing.image}}" style="width: 500px" alt="" />
+    <p class="lead w-50">{{listing.description}}</p>
+    <hr class="my-4 w-50" />
+    <h4 class="display-4">${{listing.price}}</h4>
+    {%if user.is_authenticated%} {%if watchlistTrue%}
 
-<section style="width: 100%;" class=" p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-start">
-    <div class="jumbotron">
-        <h1 class="display-4">{{listing.title}}</h1>
-        <img class="img" src="{{listing.image}}" style="width: 500px;" alt="">
-        <p class="lead w-50">{{listing.description}}</p>
-        <hr class="my-4 w-50">
-        <h4 class="display-4">${{listing.price}}</h4>
-        <!-- <p class="lead">
-            <a class="btn btn-dark btn-lg" href="#" role="button">Learn more</a>
-        </p> -->
-    </div>
+    <form action="{%url 'removeFromWatchlist' id=listing.id%}" method="POST">
+      {%csrf_token%}
+      <p class="lead">
+        <button class="btn btn-light btn-lg" type="submit">
+          Remove from watchlist
+        </button>
+      </p>
+    </form>
+    {%else%}
+    <form action="{%url 'addToWatchlist' id=listing.id%}" method="POST">
+      {%csrf_token%}
+      <p class="lead">
+        <button class="btn btn-dark btn-lg" type="submit">
+          Add to watchlist
+        </button>
+      </p>
+    </form>
+
+    {%endif%} {%endif%}
+  </div>
 </section>
 
 {% endblock %}
