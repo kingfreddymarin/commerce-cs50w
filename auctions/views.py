@@ -4,16 +4,35 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Category, Listing
+from .models import User, Category, Listing, Comment
 
 
 def listing(request, id):
     listingData = Listing.objects.get(pk=id)
     watchlistTrue = request.user in listingData.watchlist.all()
+    listingComments = listingData.listingComment.all()
     return render(request, "auctions/listing.html", {
         "listing": listingData,
-        "watchlistTrue": watchlistTrue
+        "watchlistTrue": watchlistTrue,
+        "listingComments": listingComments
     })
+
+
+def comment(request):
+    # get data from the form
+    listing = request.POST["listing"]
+    listingData = Listing.objects.get(pk=listing.id)
+    comment = request.POST["comment"]
+    user = request.user
+    # # Adding to db
+    newComment = Comment(
+        listing=listing.id,
+        author=user,
+        comment=comment
+    )
+    newComment.save()
+    # redirect to index
+    return HttpResponseRedirect(reverse(listing))
 
 
 def watchlist(request):
