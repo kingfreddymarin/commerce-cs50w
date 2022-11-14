@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>My Watchlist</h2>
+{%if myWatchlist%}
+<section class="w-100 p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-left">
+   {%for listing in myWatchlist%}
+   <a href="{%url "listing" id=listing.id%}">
+       <div class="p-2 bd-highlight card col-sm" style="width: 18rem;">
+           <img class="card-img-top" src="{{listing.image}}" alt="Card image cap">
+           <div class="card-body">
+               <h5 class="card-title">{{listing.title}}</h5>
+               <h6>${{listing.price}}</h6>
+           </div>
+       </div>
+   </a>
+   {%endfor%}
+</section>
+{%else%}
+<h1>There's nothing here!</h1>
+{%endif%}
+
+{% endblock %}
