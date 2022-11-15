@@ -52,36 +52,39 @@ def bid(request, id):
             "listing": listingData,
         })
     if request.method == 'POST':
-        if request.POST["closeBid" == True]:
-            listingData.activeListing = False
+        bid = float(request.POST["bid"])
+        listing = listingData
+        if currentListing.price > bid:
+            return render(request, "auctions/bid.html", {
+                "listing": listingData,
+                "isEligible": False
+            })
+        else:
+            newBid = Bid(
+                bid=bid,
+                bidder=user,
+                listing=listing
+            )
+            listingData.price = bid
+            newBid.save()
             listingData.save()
             return render(request, "auctions/bid.html", {
                 "listing": listingData,
-                "isBidder": False,
-                "isEligible": True,
-                "isClosed": False
+                "isEligible": True
             })
-        else:
-            bid = float(request.POST["bid"])
-            listing = listingData
-            if currentListing.price > bid:
-                return render(request, "auctions/bid.html", {
-                    "listing": listingData,
-                    "isEligible": False
-                })
-            else:
-                newBid = Bid(
-                    bid=bid,
-                    bidder=user,
-                    listing=listing
-                )
-                listingData.price = bid
-                newBid.save()
-                listingData.save()
-                return render(request, "auctions/bid.html", {
-                    "listing": listingData,
-                    "isEligible": True
-                })
+
+
+def closeBid(request, id):
+    currentListing = Listing.objects.get(pk=id)
+    currentListing.isActive = False
+    currentListing.save()
+    watchlistTrue = request.user in currentListing.watchlist.all()
+    listingComments = currentListing.listingComment.all()
+    return render(request, "auctions/listing.html", {
+        "listing": currentListing,
+        "watchlistTrue": watchlistTrue,
+        "listingComments": listingComments
+    })
 
 
 def watchlist(request):

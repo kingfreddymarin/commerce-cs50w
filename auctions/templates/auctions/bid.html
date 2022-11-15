@@ -16,9 +16,8 @@
         </div>
     </div>
     {% if isBidder == True%}
-    <form action="{%url 'bid' id=listing.id%}" method="POST">
+    <form action="{%url 'closeBid' id=listing.id%}" method="POST">
         {%csrf_token%}
-        <input type="hidden" id="closeBid" name="isClosed" value=True>
         <button class="btn ml-3 btn-danger btn-lg" type="submit">
             Close Bid
         </button>
