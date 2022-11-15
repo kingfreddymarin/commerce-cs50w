@@ -1,14 +1,23 @@
 {% extends "auctions/layout.html" %} {% block body %}
 
-<section style="width: 100%" class="p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-start">
+<section
+  style="width: 100%"
+  class="p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-start"
+>
   <div class="jumbotron">
     <h1 class="display-4">{{listing.title}}</h1>
-    <img class="img" src="{{listing.image}}" style="width: 50vw; max-width: 450px" alt="" />
+    <img
+      class="img"
+      src="{{listing.image}}"
+      style="width: 50vw; max-width: 450px"
+      alt=""
+    />
     <p class="lead w-50">{{listing.description}}</p>
     <hr class="my-4 w-50" />
     <h4 class="display-4">${{listing.price}}</h4>
-    {%if user.is_authenticated%} {%if watchlistTrue%}
-
+    {%if user.is_authenticated%} {%if listing.activeListing == False%}
+    <div>Auction closed</div>
+    {%elif watchlistTrue%}
     <form action="{%url 'removeFromWatchlist' id=listing.id%}" method="POST">
       {%csrf_token%}
       <p class="lead">
@@ -27,13 +36,19 @@
       </p>
     </form>
 
-    {%endif%}
+    {%endif%} {%if listing.activeListing == False%}
+    <p>Try with the next one!</p>
+    {%else%}
     <p class="lead">
-      <a href="{%url 'bid' id=listing.id%}" class="btn btn-dark btn-lg" type="submit">
+      <a
+        href="{%url 'bid' id=listing.id%}"
+        class="btn btn-dark btn-lg"
+        type="submit"
+      >
         Bid on {{listing}}
       </a>
     </p>
-    {%endif%}
+    {%endif%} {%endif%}
   </div>
 </section>
 <section style="width: 100%" class="p-3 mb-3 justify-content-start">
@@ -42,8 +57,16 @@
   <form action="{%url 'listing' id=listing.id%}" method="POST">
     {% csrf_token %}
     <div class="form-group mt-3">
-      <input type="text" name="comment" class="form-control" id="comment" placeholder="Add a comment" />
-      {% comment %} <input type="hidden" id="listing" name="listing" value="{{listing}}}" /> {% endcomment %}
+      <input
+        type="text"
+        name="comment"
+        class="form-control"
+        id="comment"
+        placeholder="Add a comment"
+      />
+      {% comment %}
+      <input type="hidden" id="listing" name="listing" value="{{listing}}}" />
+      {% endcomment %}
       <button class="btn mt-3 btn-dark btn-lg" type="submit">submit</button>
     </div>
   </form>

@@ -1,39 +1,41 @@
-{% extends "auctions/layout.html" %}
-
-{% block body %}
+{% extends "auctions/layout.html" %} {% block body %}
 <h2>Bidding on {{listing}}</h2>
 {%if isEligible == False%}
 <div class="alert alert-danger" role="alert">
-    The bid needs to be greater or equal!!
+  The bid needs to be greater or equal!!
 </div>
 {%endif%}
 <div class="d-flex justify-content-start align-items-center">
-    <div class="p-2 bd-highlight card col-sm" style="max-width: 18rem;">
-        <img class="card-img-top" src="{{listing.image}}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">{{listing.title}}</h5>
-            <h6>Current price: ${{listing.price}}</h6>
-        </div>
+  <div class="p-2 bd-highlight card col-sm" style="max-width: 18rem">
+    <img class="card-img-top" src="{{listing.image}}" alt="Card image cap" />
+    <div class="card-body">
+      <h5 class="card-title">{{listing.title}}</h5>
+      <h6>Current price: ${{listing.price}}</h6>
     </div>
-    {% if isBidder == True%}
-    <form action="{%url 'closeBid' id=listing.id%}" method="POST">
-        {%csrf_token%}
-        <button class="btn ml-3 btn-danger btn-lg" type="submit">
-            Close Bid
-        </button>
-    </form>
-    {%else%}
-    <form action="{%url 'bid' id=listing.id%}" method="POST">
-        {%csrf_token%}
-        <div class=" justify-content-start align-items-center">
-            <label for="bid">Your bid</label>
-            <input type="number" step="any" name="bid" class="form-control mb-4" id="bid"
-                placeholder="your bid goes here!">
-            <button class="btn btn-dark btn-lg" type="submit">
-                Bid!
-            </button>
-        </div>
-    </form>
-    {%endif%}
+  </div>
+  {%if listing.activeListing == True%} {% if isBidder == True%}
+  <form action="{%url 'closeBid' id=listing.id%}" method="POST">
+    {%csrf_token%}
+    <button class="btn ml-3 btn-danger btn-lg" type="submit">Close Bid</button>
+  </form>
+  {%else%}
+  <form action="{%url 'bid' id=listing.id%}" method="POST">
+    {%csrf_token%}
+    <div class="justify-content-start align-items-center">
+      <label for="bid">Your bid</label>
+      <input
+        type="number"
+        step="any"
+        name="bid"
+        class="form-control mb-4"
+        id="bid"
+        placeholder="your bid goes here!"
+      />
+      <button class="btn btn-dark btn-lg" type="submit">Bid!</button>
+    </div>
+  </form>
+  {%endif%} {%else%}
+  <h1>Bidding is closed</h1>
+  {%endif%}
 </div>
 {% endblock %}
