@@ -8,29 +8,50 @@ from .models import User, Category, Listing, Comment
 
 
 def listing(request, id):
-    listingData = Listing.objects.get(pk=id)
-    watchlistTrue = request.user in listingData.watchlist.all()
-    listingComments = listingData.listingComment.all()
-    return render(request, "auctions/listing.html", {
-        "listing": listingData,
-        "watchlistTrue": watchlistTrue,
-        "listingComments": listingComments
-    })
+    if request.method == "GET":
+        listingData = Listing.objects.get(pk=id)
+        watchlistTrue = request.user in listingData.watchlist.all()
+        listingComments = listingData.listingComment.all()
+        return render(request, "auctions/listing.html", {
+            "listing": listingData,
+            "watchlistTrue": watchlistTrue,
+            "listingComments": listingComments
+        })
+    else:
+        listingData = Listing.objects.get(pk=id)
+        watchlistTrue = request.user in listingData.watchlist.all()
+        listingComments = listingData.listingComment.all()
+        listingData = Listing.objects.get(title=listingData.title)
+        comment = request.POST["comment"]
+        user = request.user
+        # # Adding to db
+        newComment = Comment(
+            listing=listingData,
+            author=user,
+            comment=comment
+        )
+        newComment.save()
+        # redirect to index
+        return render(request, "auctions/listing.html", {
+            "listing": listingData,
+            "watchlistTrue": watchlistTrue,
+            "listingComments": listingComments
+        })
 
 
 def comment(request):
     # get data from the form
-    listing = request.POST["listing"]
-    listingData = Listing.objects.get(pk=listing.id)
-    comment = request.POST["comment"]
-    user = request.user
+    # listing = request.POST["listing"]
+    # listingData = Listing.objects.get(pk=listing.id)
+    # comment = request.POST["comment"]
+    # user = request.user
     # # Adding to db
-    newComment = Comment(
-        listing=listing.id,
-        author=user,
-        comment=comment
-    )
-    newComment.save()
+    # newComment = Comment(
+    #     listing=listing.id,
+    #     author=user,
+    #     comment=comment
+    # )
+    # newComment.save()
     # redirect to index
     return HttpResponseRedirect(reverse(listing))
 

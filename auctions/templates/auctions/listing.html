@@ -36,7 +36,7 @@
 <section>
   <h2>Comments</h2>
   {%if user.is_authenticated%}
-  <form action="{%url 'comment' %}" method="POST">
+  <form action="{%url 'listing' id=listing.id%}" method="POST">
     {% csrf_token %}
     <div class="form-group mt-3">
       <input
@@ -46,7 +46,7 @@
         id="comment"
         placeholder="Add a comment"
       />
-      <input type="hidden" id="listing" name="listing" value="{{listing}}}" />
+      {% comment %} <input type="hidden" id="listing" name="listing" value="{{listing}}}" /> {% endcomment %}
       <button class="btn mt-3 btn-dark btn-lg" type="submit">submit</button>
     </div>
   </form>
