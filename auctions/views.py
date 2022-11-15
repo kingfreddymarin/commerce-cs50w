@@ -39,23 +39,6 @@ def listing(request, id):
         })
 
 
-def comment(request):
-    # get data from the form
-    # listing = request.POST["listing"]
-    # listingData = Listing.objects.get(pk=listing.id)
-    # comment = request.POST["comment"]
-    # user = request.user
-    # # Adding to db
-    # newComment = Comment(
-    #     listing=listing.id,
-    #     author=user,
-    #     comment=comment
-    # )
-    # newComment.save()
-    # redirect to index
-    return HttpResponseRedirect(reverse(listing))
-
-
 def watchlist(request):
     user = request.user
     myWatchlist = user.watchlist.all()
