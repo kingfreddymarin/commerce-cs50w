@@ -30,6 +30,17 @@ class Listing(models.Model):
         return self.title
 
 
+class Bid(models.Model):
+    bid = models.FloatField(default=0)
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, blank=True, null=True, related_name="listinBid")
+    bidder = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name="userBid")
+
+    def __str__(self):
+        return f"{self.bid} by {self.bidder} on {self.listing}"
+
+
 class Comment(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True, related_name="userComment")

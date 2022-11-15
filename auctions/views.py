@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Category, Listing, Comment
+from .models import User, Category, Listing, Comment, Bid
 
 
 def listing(request, id):
@@ -33,6 +33,55 @@ def listing(request, id):
             "watchlistTrue": watchlistTrue,
             "listingComments": listingComments
         })
+
+
+def bid(request, id):
+    currentListing = Listing.objects.get(pk=id)
+    listingData = Listing.objects.get(title=currentListing.title)
+    user = request.user
+    if listingData.owner == user:
+        return render(request, "auctions/bid.html", {
+            "listing": listingData,
+            "isBidder": True,
+            "isEligible": True,
+            "isClosed": False
+        })
+
+    if request.method == "GET":
+        return render(request, "auctions/bid.html", {
+            "listing": listingData,
+        })
+    if request.method == 'POST':
+        if request.POST["closeBid" == True]:
+            listingData.activeListing = False
+            listingData.save()
+            return render(request, "auctions/bid.html", {
+                "listing": listingData,
+                "isBidder": False,
+                "isEligible": True,
+                "isClosed": False
+            })
+        else:
+            bid = float(request.POST["bid"])
+            listing = listingData
+            if currentListing.price > bid:
+                return render(request, "auctions/bid.html", {
+                    "listing": listingData,
+                    "isEligible": False
+                })
+            else:
+                newBid = Bid(
+                    bid=bid,
+                    bidder=user,
+                    listing=listing
+                )
+                listingData.price = bid
+                newBid.save()
+                listingData.save()
+                return render(request, "auctions/bid.html", {
+                    "listing": listingData,
+                    "isEligible": True
+                })
 
 
 def watchlist(request):

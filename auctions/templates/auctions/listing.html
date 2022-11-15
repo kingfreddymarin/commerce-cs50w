@@ -27,7 +27,13 @@
       </p>
     </form>
 
-    {%endif%} {%endif%}
+    {%endif%}
+    <p class="lead">
+      <a href="{%url 'bid' id=listing.id%}" class="btn btn-dark btn-lg" type="submit">
+        Bid on {{listing}}
+      </a>
+    </p>
+    {%endif%}
   </div>
 </section>
 <section style="width: 100%" class="p-3 mb-3 justify-content-start">
