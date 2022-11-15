@@ -1,34 +1,57 @@
-{% extends "auctions/layout.html" %}
-
-{% block body %}
+{% extends "auctions/layout.html" %} {% block body %}
 <h2>Create new Listing</h2>
 
 <form action="{%url 'create'%}" method="post">
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" name='title' class="form-control" id="title" placeholder="Title">
-    </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" name="description" class="form-control" id="description" placeholder="Description">
-    </div>
-    <div class="form-group">
-        <label for="image">Image URL</label>
-        <input type="text" name="image" class="form-control" id="image" placeholder="Image">
-    </div>
-    <div class="form-group">
-        <label for="price">Price $</label>
-        <input type="number" step="any" name="price" class="form-control" id="price" placeholder="$9.99">
-    </div>
-    <div class="form-group">
-        <label for="category">Category</label>
-        <select class="form-control" name="category" id="category">
-            {%for category in categorys%}
-            <option value = '{{category}}'>{{category}}</option>
-            {%endfor%}
-        </select>
-    </div>
-    <input type="submit" class="btn btn-dark">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input
+      type="text"
+      name="title"
+      class="form-control"
+      id="title"
+      placeholder="Title"
+    />
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input
+      type="text"
+      name="description"
+      class="form-control"
+      id="description"
+      placeholder="Description"
+    />
+  </div>
+  <div class="form-group">
+    <label for="image">Image URL</label>
+    <input
+      type="text"
+      name="image"
+      class="form-control"
+      id="image"
+      placeholder="Image"
+    />
+  </div>
+  <div class="form-group">
+    <label for="price">Price $</label>
+    <input
+      type="number"
+      step="any"
+      name="price"
+      class="form-control"
+      id="price"
+      placeholder="$9.99"
+    />
+  </div>
+  <div class="form-group">
+    <label for="category">Category</label>
+    <select class="form-control" name="category" id="category">
+      {%for category in categorys%}
+      <option value="{{category}}">{{category}}</option>
+      {%endfor%}
+    </select>
+  </div>
+  <input type="submit" class="btn btn-dark" />
 </form>
 {% endblock %}

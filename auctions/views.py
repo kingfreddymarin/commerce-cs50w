@@ -7,16 +7,27 @@ from django.urls import reverse
 from .models import User, Category, Listing, Comment, Bid
 
 
+def categories(request):
+    if request.method == "GET":
+        categories = Category.objects.all()
+        return render(request, "auctions/categories.html", {
+            "categories": categories
+        })
+
+
 def listing(request, id):
     listingData = Listing.objects.get(pk=id)
     watchlistTrue = request.user in listingData.watchlist.all()
     listingComments = listingData.listingComment.all()
     user = request.user
+    currentBidder = listingData.latestBidder
     if request.method == "GET":
         return render(request, "auctions/listing.html", {
             "listing": listingData,
             "watchlistTrue": watchlistTrue,
-            "listingComments": listingComments
+            "listingComments": listingComments,
+            "currentBidder": currentBidder,
+            "currentUser": user
         })
     elif request.method == "POST":
         comment = request.POST["comment"]
@@ -31,33 +42,37 @@ def listing(request, id):
         return render(request, "auctions/listing.html", {
             "listing": listingData,
             "watchlistTrue": watchlistTrue,
-            "listingComments": listingComments
+            "listingComments": listingComments,
+            "currentBidder": currentBidder,
+            "currentUser": user
         })
 
 
 def bid(request, id):
     currentListing = Listing.objects.get(pk=id)
-    listingData = Listing.objects.get(title=currentListing.title)
+    # listingData = Listing.objects.get(title=currentListing.title)
     user = request.user
-
+    currentBidder = currentListing.latestBidder
     if request.method == "GET":
-        if listingData.owner == user:
+        if currentListing.owner == user:
             return render(request, "auctions/bid.html", {
-                "listing": listingData,
+                "listing": currentListing,
                 "isBidder": True,
                 "isEligible": True,
-                "isClosed": False
+                "isClosed": False,
+                "currentBidder": currentBidder,
+                "currentUser": user
             })
         else:
             return render(request, "auctions/bid.html", {
-                "listing": listingData,
+                "listing": currentListing,
             })
     if request.method == 'POST':
         bid = float(request.POST["bid"])
-        listing = listingData
+        listing = currentListing
         if currentListing.price > bid:
             return render(request, "auctions/bid.html", {
-                "listing": listingData,
+                "listing": currentListing,
                 "isEligible": False
             })
         else:
@@ -66,17 +81,22 @@ def bid(request, id):
                 bidder=user,
                 listing=listing
             )
-            listingData.price = bid
+            currentListing.price = bid
+            currentListing.latestBidder = newBid.bidder
             newBid.save()
-            listingData.save()
+            currentListing.save()
             return render(request, "auctions/bid.html", {
-                "listing": listingData,
-                "isEligible": True
+                "listing": currentListing,
+                "isEligible": True,
+                "currentBidder": currentBidder,
+                "currentUser": user
             })
 
 
 def closeBid(request, id):
     currentListing = Listing.objects.get(pk=id)
+    user = request.user
+    currentBidder = currentListing.latestBidder
     currentListing.activeListing = False
     currentListing.save()
     watchlistTrue = request.user in currentListing.watchlist.all()
@@ -84,7 +104,9 @@ def closeBid(request, id):
     return render(request, "auctions/listing.html", {
         "listing": currentListing,
         "watchlistTrue": watchlistTrue,
-        "listingComments": listingComments
+        "listingComments": listingComments,
+        "currentBidder": currentBidder,
+        "currentUser": user
     })
 
 

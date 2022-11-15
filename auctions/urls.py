@@ -20,4 +20,5 @@ urlpatterns = [
          name="bid"),
     path("closeBid/<int:id>", views.closeBid,
          name="closeBid"),
+    path("categories/", views.categories, name="categories"),
 ]

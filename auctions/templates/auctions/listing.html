@@ -12,6 +12,7 @@
       style="width: 50vw; max-width: 450px"
       alt=""
     />
+    <p>{{listing.owner}}</p>
     <p class="lead w-50">{{listing.description}}</p>
     <hr class="my-4 w-50" />
     <h4 class="display-4">${{listing.price}}</h4>
@@ -38,7 +39,11 @@
 
     {%endif%} {%if listing.activeListing == False%}
     <p>Try with the next one!</p>
-    {%else%}
+    {%if currentBidder == currentUser%}
+    <div class="w-50 alert alert-success" role="alert">
+      You won {{currentUser}}!!
+    </div>
+    {%endif%} {%else%}
     <p class="lead">
       <a
         href="{%url 'bid' id=listing.id%}"
@@ -64,9 +69,6 @@
         id="comment"
         placeholder="Add a comment"
       />
-      {% comment %}
-      <input type="hidden" id="listing" name="listing" value="{{listing}}}" />
-      {% endcomment %}
       <button class="btn mt-3 btn-dark btn-lg" type="submit">submit</button>
     </div>
   </form>
