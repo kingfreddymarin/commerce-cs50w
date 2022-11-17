@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from .models import User, Category, Listing, Comment, Bid
@@ -16,7 +16,7 @@ def categories(request):
 
 
 def listing(request, id):
-    listingData = Listing.objects.get(pk=id)
+    listingData = get_object_or_404(Listing, pk=id)
     watchlistTrue = request.user in listingData.watchlist.all()
     listingComments = listingData.listingComment.all()
     user = request.user
