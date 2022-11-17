@@ -37,9 +37,9 @@
       </p>
     </form>
 
-    {%endif%} {%if listing.activeListing == False%}
-    <p>Try with the next one!</p>
-    {%if currentBidder == currentUser%}
+    {%endif%} {%if listing.activeListing == False%} {%if listing.owner == user%}
+    <div class="w-50 alert alert-success" role="alert">You sold it!!!</div>
+    {%else%} {%endif%} {%if currentBidder == currentUser%}
     <div class="w-50 alert alert-success" role="alert">
       You won {{currentUser}}!!
     </div>
