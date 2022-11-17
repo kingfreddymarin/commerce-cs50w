@@ -27,11 +27,20 @@ def listing(request, id):
             "watchlistTrue": watchlistTrue,
             "listingComments": listingComments,
             "currentBidder": currentBidder,
-            "currentUser": user
+            "currentUser": user,
+            "isVoidAlert": False
         })
     elif request.method == "POST":
         comment = request.POST["comment"]
-
+        if request.POST["comment"] == '':
+            return render(request, "auctions/listing.html", {
+                "listing": listingData,
+                "watchlistTrue": watchlistTrue,
+                "listingComments": listingComments,
+                "currentBidder": currentBidder,
+                "currentUser": user,
+                "isVoidAlert": True
+            })
         newComment = Comment(
             listing=listingData,
             author=user,
@@ -44,7 +53,8 @@ def listing(request, id):
             "watchlistTrue": watchlistTrue,
             "listingComments": listingComments,
             "currentBidder": currentBidder,
-            "currentUser": user
+            "currentUser": user,
+            "isVoidAlert": False
         })
 
 
@@ -159,7 +169,8 @@ def createListing(request):
     if request.method == "GET":
         return render(request, "auctions/create.html", {
             # Sending the categories to the view
-            "categorys": Category.objects.all()
+            "categorys": Category.objects.all(),
+            "isVoidAlert": False
         })
     else:
         # get data from the form
@@ -171,6 +182,12 @@ def createListing(request):
         # As category is an object, we need to get all it's values from the category input
         category = request.POST["category"]
         categoryData = Category.objects.get(categoryName=category)
+
+        if title == '' or description == '' or image == '' or price == '':
+            return render(request, "auctions/create.html", {
+                "categorys": Category.objects.all(),
+                "isVoidAlert": True
+            })
 
         # Getting the current user
         user = request.user

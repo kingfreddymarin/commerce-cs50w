@@ -60,7 +60,9 @@
   <h2>Comments</h2>
   {%if user.is_authenticated%}
   <form action="{%url 'listing' id=listing.id%}" method="POST">
-    {% csrf_token %}
+    {% csrf_token %} {%if isVoidAlert == True%}
+    <div class="alert alert-danger" role="alert">The comment is blank</div>
+    {%endif%}
     <div class="form-group mt-3">
       <input
         type="text"
