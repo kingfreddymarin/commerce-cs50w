@@ -18,7 +18,8 @@ def categories(request):
 def listing(request, id):
     listingData = get_object_or_404(Listing, pk=id)
     watchlistTrue = request.user in listingData.watchlist.all()
-    listingComments = listingData.listingComment.all()
+    # setting comments for a listing in a desc order
+    listingComments = listingData.listingComment.all().order_by('-id')
     user = request.user
     currentBidder = listingData.latestBidder
     if request.method == "GET":
