@@ -2,11 +2,12 @@
 
 {% block body %}
 
-    <h2>Login</h2>
+    <h2 style="margin-left: 0.5em;">Login</h2>
 
     {% if message %}
-        <div>{{ message }}</div>
+        <div style="margin-left: 1em;">{{ message }}</div>
     {% endif %}
+    <div style="margin-left: 1em;max-width: 500px">
 
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
@@ -20,5 +21,5 @@
     </form>
 
     Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-
+    </div>
 {% endblock %}

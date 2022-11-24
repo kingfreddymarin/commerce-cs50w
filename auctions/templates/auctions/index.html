@@ -1,22 +1,26 @@
 {% extends "auctions/layout.html" %}
+{% load static %} 
 
 {% block body %}
-<h2>Active Listings</h2>
-<form action="{% url 'categoryFilter'%}" method="post" class="d-flex justify-content-start align-items-center">
-    {% csrf_token %}
-    <select class="form-control mr-3" name="category" id="category">
-        <option value="fb">Filter by...</option>
-        {%for category in categorys%}
-        <option value='{{category}}'>{{category}}</option>
-        {%endfor%}
-    </select>
+<div class = 'ml-4'>
+    <h2 >Active Listings</h2>
+    <form action="{% url 'categoryFilter'%}" method="post" class="d-flex justify-content-start align-items-center">
+        {% csrf_token %}
+        <select style="max-width: 750px"class="form-control mr-3" name="category" id="category">
+            <option value="fb">Filter by...</option>
+            {%for category in categorys%}
+            <option value='{{category}}'>{{category}}</option>
+            {%endfor%}
+        </select>
     <input type="submit" class="btn btn-dark">
 </form>
+</div>
 
-<section class="w-100 p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-center">
+
+<section class="w-100 p-3 d-flex  flex-wrap flex-row bd-highlight mb-3 justify-content-start">
     {%for listing in listings%}
-    <a href="{%url "listing" id=listing.id%}">
-        <div class="p-2 bd-highlight card col-sm" style="width: 18rem;">
+    <a class= "card-image "href="{%url "listing" id=listing.id%}">
+        <div class="m-2 p-2 bd-highlight card col-sm" style="width: 18rem;">
             <img class="card-img-top" src="{{listing.image}}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">{{listing.title}}</h5>

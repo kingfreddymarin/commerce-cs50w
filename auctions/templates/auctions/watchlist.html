@@ -6,7 +6,7 @@
 <section class="w-100 p-3 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-left">
    {%for listing in myWatchlist%}
    <a href="{%url "listing" id=listing.id%}">
-       <div class="p-2 bd-highlight card col-sm" style="width: 18rem;">
+       <div class="m-2 p-2 bd-highlight card col-sm" style="width: 18rem;">
            <img class="card-img-top" src="{{listing.image}}" alt="Card image cap">
            <div class="card-body">
                <h5 class="card-title">{{listing.title}}</h5>

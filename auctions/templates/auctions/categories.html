@@ -1,10 +1,10 @@
 {% extends "auctions/layout.html" %} {% block body %}
+<h2 class="ml-4 mb-0">Categories</h2>
 <div
-  class="w-100 p-3 d-flex flex-wrap flex-column bd-highlight mb-3 justify-content-center align-items-center"
+  class="mt-0 ml-4 w-100 p-1 d-flex flex-wrap flex-row bd-highlight mb-3 justify-content-start align-items-center"
 >
-  <h2>Categories</h2>
   {%for category in categories%}
-  <form class="mx-3" action="{%url 'categoryFilter'%}" method="post">
+  <form class="mr-2" action="{%url 'categoryFilter'%}" method="post">
     {% csrf_token %}
     <div class="form-group"></div>
     <input

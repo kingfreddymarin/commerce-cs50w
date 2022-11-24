@@ -1,3 +1,10 @@
+*,
+body,
+.jumbotron,
+.bd-highlight{
+    background-color: #181a1b;
+    color: antiquewhite;
+}
 body {
     padding: 10px;
 }

@@ -1,11 +1,11 @@
 {% extends "auctions/layout.html" %} {% block body %}
-<h2>Create new Listing</h2>
+<h2 class="ml-4">Create new Listing</h2>
 {%if isVoidAlert == True%}
-<div class="alert alert-danger" role="alert">
+<div class="ml-4 alert alert-danger" style="max-width: 750px" role="alert">
   There should not be any blank spaces
 </div>
 {%endif%}
-
+<div class="ml-4" style="max-width: 750px">
 <form action="{%url 'create'%}" method="post">
   {% csrf_token %}
   <div class="form-group">
@@ -59,4 +59,5 @@
   </div>
   <input type="submit" class="btn btn-dark" />
 </form>
+</div>
 {% endblock %}
